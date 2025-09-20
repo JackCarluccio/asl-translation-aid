@@ -19,28 +19,38 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Tabs */
 .tabs {
   display: flex;
   justify-content: center;
+  gap: 15px;
   margin-bottom: 15px;
 }
 
-.tab {
-  flex: 1;
-  padding: 10px;
+.tabs .tab {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   border: none;
   background: #e1e3e5;
   cursor: pointer;
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
-.tab.active {
+.tabs .tab img {
+  width: 50%;   /* scale image to fit nicely inside circle */
+  height: 50%;
+}
+
+.tabs .tab.active {
   background: #1a73e8;
-  color: white;
-  font-weight: bold;
 }
 
+.tabs .tab:hover {
+  background: #d0d2d4;
+}
 /* Panels stacked vertically */
 .panel {
   display: flex;
@@ -105,6 +115,8 @@ textarea.output {
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: auto;
+  margin-bottom: 5px;
 }
 
 #translateBtn:hover {

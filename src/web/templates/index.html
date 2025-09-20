@@ -7,14 +7,9 @@
 </head>
 <body>
   <div class="container">
-    <h1>Translate-like</h1>
+    <h1>ASL Translate App</h1>
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab active" id="textTab" onclick="showTab('text')">Text</button>
-      <button class="tab" id="camera-button" onclick="showTab('camera')">Camera</button>
-      <button class="tab" id="microphone-button" onclick="showTab('microphone')">Microphone</button>
-    </div>
+    
 
     <!-- Text Mode -->
     <div id="textMode" class="mode active">
@@ -61,6 +56,19 @@
 
 
       <button id="translateBtn" onclick="translateText()">Translate</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" id="textTab" onclick="showTab('text')">
+            <img src="{{ url_for('static', filename='icons/text.png') }}" alt="Text" />
+        </button>
+        <button class="tab" id="camera-button" onclick="showTab('camera')">
+            <img src="{{ url_for('static', filename='icons/camera.png') }}" alt="Camera" />
+        </button>
+        <button class="tab" id="microphone-button" onclick="showTab('microphone')">
+            <img src="{{ url_for('static', filename='icons/microphone.png') }}" alt="Microphone" />
+        </button>
     </div>
 
     <!-- Camera Mode -->
