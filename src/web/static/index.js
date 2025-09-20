@@ -12,7 +12,7 @@ let languageTarget = 'es';
 let languageSource = 'en';
 
 const languageOptions = [
-    'en', 'fr', 'es', 'de', 'it', 'ru', 'zh', 'ja', 'ko', 'ar', 'hi'
+    'en', 'fr', 'es', 'de', 'it', 'ru', 'zh', 'ja', 'ko', 'ar', 'hi', 'sl-SI'
 ]
 
 // Switches the source and target languages when the button is clicked
