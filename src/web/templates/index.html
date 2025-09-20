@@ -31,6 +31,9 @@
       <option value="sl-SI">Slovenian</option>
     </select>
     <textarea id="input-text" placeholder="Enter text"></textarea>
+    <button class="speaker-btn" id="speaker-button-source">
+        <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
+    </button>
   </div>
 
   <!-- Swap button -->
@@ -40,6 +43,7 @@
 
   <!-- Target Text Area with Language Selector -->
   <div class="panel">
+        
     <select class="language-select" id="language-target">
       <option value="en">English</option>
       <option value="es" selected>Spanish</option>
@@ -55,7 +59,12 @@
       <option value="sl-SI">Slovenian</option>
     </select>
     <textarea id="output-text" class="output" readonly></textarea>
-    <button id="copyBtn">Copy</button>
+    <button id="copyBtn">
+        <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
+    </button>
+    <button class="speaker-btn" id="speaker-button-target">
+        <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
+    </button>
   </div>
 
   <!-- Translate Button -->
