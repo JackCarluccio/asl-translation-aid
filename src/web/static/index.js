@@ -76,3 +76,34 @@ setInterval(() => {
         outputTextArea.value = translatedText;
     });
 }, 1000);
+
+
+function initRecognition() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      alert("SpeechRecognition not supported in this browser.");
+      return null;
+    }
+    
+    const r = new SR();
+    r.interimResults = true;
+    r.continuous = false;
+    r.maxAlternatives = 1;
+    return r;
+}
+
+microphoneButton.addEventListener('click', () => {
+    recognition = initRecognition();
+    if (!recognition) return;
+
+    recognition.lang = languageSource;
+    recognition.onresult = (e) => {
+      let text = '';
+      for (const res of e.results) text += res[0].transcript;
+      inputTextArea.value = text;
+    };
+
+    recognition.onerror = (e) => console.error("STT error:", e.error);
+    recognition.onend = () => console.log("STT ended");
+    recognition.start();
+});
