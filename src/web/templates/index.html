@@ -1,12 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Flask Demo</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <title>Translate-like</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css')}}">
 </head>
 <body>
-    <h1>Hello, Flask!</h1>
-    <p>This is styled with static/style.css</p>
+  <div class="container">
+    <h1>Translate-like</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" id="textTab" onclick="showTab('text')">Text</button>
+      <button class="tab" id="camera-button" onclick="showTab('camera')">Camera</button>
+      <button class="tab" id="microphone-button" onclick="showTab('microphone')">Microphone</button>
+    </div>
+
+    <!-- Text Mode -->
+    <div id="textMode" class="mode active">
+      <div class="translate-box">
+        <div class="panel">
+          <textarea id="inputText" placeholder="Enter text"></textarea>
+        </div>
+        <div class="panel">
+          <textarea id="outputText" class="output" readonly></textarea>
+          <button id="copyBtn">Copy</button>
+        </div>
+      </div>
+
+      <!-- Language controls under text areas -->
+      <div class="lang-bar">
+        <select id="language-source"></select>
+        <button id="switch-button">⇄</button>
+        <select id="languauge-target"></select>
+      </div>
+
+      <button id="translateBtn" onclick="translateText()">Translate</button>
+    </div>
+
+    <!-- Camera Mode -->
+    <div id="cameraMode" class="mode">
+      <div class="camera-box">
+        <p>📷 Camera mode placeholder</p>
+        <input type="file" accept="image/*" capture="environment">
+        <p>(Upload or capture an image for translation)</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename = 'index.js')}}"></script>
 </body>
 </html>
