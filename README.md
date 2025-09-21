@@ -1,6 +1,6 @@
 # ASL Translation Aid (SteelHacks 12)
 
-A Google-Translate-style application that provides **American Sign Language (ASL) video interpretation** in addition to text and speech translation.
+A Google-Translate-style application that provides **American Sign Language (ASL) real-time video interpretation** in addition to text and speech translation between many langauges.
 
 ## Overview
 
@@ -8,6 +8,12 @@ ASL Translation Aid enables users to:
 - Translate text between multiple languages
 - Convert speech to text and text to speech (STT/TTS)
 - **Interpret ASL from a live webcam stream** and output the results as text or speech
+
+## Contributers 
+- Jack Carluccio - jec432@pitt.edu
+- Anthony Cardello - ajc434@pitt.edu
+- Kolja Hribar - koh16@pitt.edu
+- Gautam Udupa - gau14@pitt.edu
 
 ## Technology Stack
 
