@@ -2,10 +2,14 @@ from ultralytics import YOLO
 import cv2
 import mediapipe as mp
 import numpy as np
+from pathlib import Path
 
 
 cap = cv2.VideoCapture(0)
-model = YOLO("/home/anthony/steelhacks/asl-translation-aid/data/best.pt") 
+WEIGHTS = (Path(__file__).resolve().parents[2] / "data" / "best.pt")
+assert WEIGHTS.exists(), f"Missing weights at: {WEIGHTS}"
+
+model = YOLO(str(WEIGHTS))
 
 
 # Initialize MediaPipe hands
