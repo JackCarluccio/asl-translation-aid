@@ -35,12 +35,20 @@
       <option value="kn-IN">Kannada</option>
     </select>
     <textarea id="input-text" placeholder="Enter text"></textarea>
-    <button class="speaker-btn" id="speaker-button-source">
-        <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
-    </button>
+    
     <button class = "copyBtn" id="copy-button-source">
         <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
-    </button>
+      </button>
+    <div class = "bottom-left">
+      <button class="speaker-btn" id="speaker-button-source">
+        <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
+      </button>
+      <button  id="microphone-button">
+            <img src="{{ url_for('static', filename='icons/microphone.png') }}" alt="Microphone" />
+      </button>
+    </div>
+    
+
   </div>
 
   <!-- Swap button -->
@@ -71,9 +79,12 @@
     <button class="copyBtn" id="copy-button-target">
         <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
     </button>
-    <button class="speaker-btn" id="speaker-button-target">
+    <div class= "bottom-left">
+      <button class="speaker-btn" id="speaker-button-target">
         <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
-    </button>
+      </button>
+    </div>
+      
   </div>
 
 
@@ -88,9 +99,7 @@
         <button class="tab" id="camera-button">
             <img src="{{ url_for('static', filename='icons/camera.png') }}" alt="Camera" />
         </button>
-        <button class="tab" id="microphone-button">
-            <img src="{{ url_for('static', filename='icons/microphone.png') }}" alt="Microphone" />
-        </button>
+        
     </div>
 
     <!-- Camera Mode -->

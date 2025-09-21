@@ -4,7 +4,7 @@ body {
   margin: 0;
   padding: 0;
 }
-#player{
+#player{  
   visibility: hidden;
 }
 .container {
@@ -15,7 +15,12 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-
+.bottom-left{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+}
 h1 {
   text-align: center;
   margin-bottom: 2%;
@@ -104,6 +109,8 @@ h1 {
   width: 100%; /* Ensure panels stay within container */
 }
 
+
+
 /* Textareas */
 textarea {
   height: 20%;
@@ -160,6 +167,8 @@ textarea.output {
 }
 
 
+
+
 /* Swap Button */
 .switch-container {
   display: flex;
@@ -185,15 +194,7 @@ textarea.output {
   background-color: rgba(0, 0, 0, 0.40);
 }
 
-/* Camera & Microphone placeholders */
-.camera-box, .microphone-box {
-  text-align: center;
-  padding: 40px;
-  border: 2px dashed #dadce0;
-  border-radius: 12px;
-  background: #f8f9fa;
-  color: #5f6368;
-}
+
 
 /* Hide inactive modes */
 .mode {
@@ -219,10 +220,29 @@ textarea.output {
   }
 }
 
+#microphone-button{
+  position: relative;
+  width :5%;
+  height: auto;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 10;
+}
+#microphone-button img{
+  height: auto;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
 .speaker-btn {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
+  position: relative;
+  
   width: 5%;
   height: auto;
   aspect-ratio: 1;
