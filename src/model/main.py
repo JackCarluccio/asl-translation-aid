@@ -125,12 +125,13 @@ def process_frame(img):
 
     # === YOLO on your mask image ===
     raw_label, conf = yolo_predict_best(mask)
-    return raw_label
+    collect_char(raw_label, 10, 7)
+    return live_text()
 
 RAW_WINDOW = []
 ACCEPTED = []
 
-def collect_char(raw_label, window_size=10, threshold=7):
+def collect_char(raw_label, window_size, threshold):
     if raw_label == "unknown" or not raw_label.isalpha(): 
         return
     RAW_WINDOW.append(raw_label.lower())
