@@ -57,4 +57,5 @@ Then visit `http://<your-ip>:5000` from another device on the same network.
 - **Static/templating issues:** Run from repo root; confirm `templates/` and `static/` exist and CSS is linked via `/static/...`.
 
 ## Attribution
+[Flaticon Icons](https://www.flaticon.com/)
 Built for **SteelHacks 12** (University of Pittsburgh)
