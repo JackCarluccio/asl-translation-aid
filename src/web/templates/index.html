@@ -37,16 +37,25 @@
     </select>
     <textarea id="input-text" placeholder="Enter text"></textarea>
     
-    <button class = "copyBtn" id="copy-button-source">
+    <div class = "bottom-right">
+        <button id="copy-button-source">
         <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
       </button>
+    </div>
+    
     <div class = "bottom-left">
-      <button class="speaker-btn" id="speaker-button-source">
-        <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
-      </button>
-      <button  id="microphone-button">
+      
+      <div>
+          <button  id="microphone-button">
             <img src="{{ url_for('static', filename='icons/microphone.png') }}" alt="Microphone" />
-      </button>
+          </button>
+      </div>
+      <div>
+        <button class="speaker-btn" id="speaker-button-source">
+          <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
+        </button>
+      </div>
+      
     </div>
     
 
@@ -77,9 +86,12 @@
       <option value="kn-IN">Kannada</option>
     </select>
     <textarea id="output-text" class="output" readonly></textarea>
-    <button class="copyBtn" id="copy-button-target">
+    <div class = "bottom-right">
+        <button id="copy-button-target">
         <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
-    </button>
+        </button>
+    </div>
+    
     <div class= "bottom-left">
       <button class="speaker-btn" id="speaker-button-target">
         <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
@@ -94,32 +106,15 @@
 
     <!-- Tabs -->
     <div class="tabs">
-        <button class="tab active" id="textTab">
-            <img src="{{ url_for('static', filename='icons/text.png') }}" alt="Text" />
-        </button>
         <button class="tab" id="camera-button">
             <img src="{{ url_for('static', filename='icons/camera.png') }}" alt="Camera" />
         </button>
         
     </div>
 
-    <!-- Camera Mode -->
-    <div id="cameraMode" class="mode">
-      <div class="camera-box">
-        <p>📷 Camera mode placeholder</p>
-        <input type="file" accept="image/*" capture="environment">
-        <p>(Upload or capture an image for translation)</p>
-      </div>
-    </div>
+    
 
-    <!-- Microphone Mode -->
-    <div id="microphoneMode" class="mode">
-      <div class="microphone-box">
-        <p>🎤 Microphone mode placeholder</p>
-        <button id="startMic">Start Recording</button>
-        <p>(Speech-to-text input for translation)</p>
-      </div>
-    </div>
+    
 
   </div>
 
