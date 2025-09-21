@@ -17,7 +17,7 @@ def read_corpus(filename):
         return words
 
 # creating vocabulary
-words = read_corpus("data_sample/big.txt")
+words = read_corpus("src/data_structures/data_sample/big.txt")
 vocabs = set(words)
 
 # creating a dictionary with word and its probability

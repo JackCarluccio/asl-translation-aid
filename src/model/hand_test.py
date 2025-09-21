@@ -12,6 +12,7 @@ import time
 # === Imports from your schema/detector ===
 from src.data_structures.detection import Detector
 from src.data_structures.schema import MLFrame, Prediction, CLASSES, UNKNOWN_CLASS
+from src.data_structures.text_corrector import word_check
 
 # 1. Load the data
 df = pd.read_csv("src/model/hand_landmarks.csv")
@@ -43,13 +44,7 @@ hands = mp_hands.Hands(
 mp_drawing = mp.solutions.drawing_utils
 
 # Start webcam capture
-cap = cv2.VideoCapture(0, cv2.CAP_AVFOUNDATION)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-cap.set(cv2.CAP_PROP_FPS, 30)
-ok, _ = cap.read()
-if not ok:
-    raise RuntimeError("Camera opened but returned empty frames.")
+cap = cv2.VideoCapture(0)
 
 quit_now = False
 try:
@@ -122,4 +117,4 @@ finally:
     cap.release()
     cv2.destroyAllWindows()
     final_sentence = detector.snapshot().buffer
-    print("\nFINAL SENTENCE:", final_sentence, flush=True)
+    print("\nFINAL SENTENCE:", word_check(final_sentence), flush=True)

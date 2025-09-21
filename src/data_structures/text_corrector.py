@@ -1,6 +1,4 @@
-from spell_checker import try_word
-
-sentence = input("Type in a sentence: ")
+from src.data_structures.spell_checker import try_word
 
 def word_check(sentence):
     words = sentence.split()
@@ -8,5 +6,3 @@ def word_check(sentence):
     for w in words:
         corrected.append(try_word(w))
     return " ".join(corrected)
-
-print(word_check(sentence))
