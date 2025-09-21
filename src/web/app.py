@@ -4,10 +4,13 @@ import requests
 import os
 from dotenv import load_dotenv
 
+from .tts_api import bp as tts_bp
+
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 app = Flask(__name__)
+app.register_blueprint(tts_bp)
 
 # Main route to serve the HTML page
 @app.route('/')

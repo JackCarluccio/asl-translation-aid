@@ -56,6 +56,24 @@ setInterval(() => {
 }, 1000);
 
 
+async function speak(text, lang) {
+    const res = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, lang })
+    });
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = document.getElementById("player");
+    audio.src = url;
+    await audio.play();
+}
+
+
 function initRecognition() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
@@ -107,16 +125,12 @@ languageSourceDropdown.addEventListener("change", updateTranslation);
 
 // Speaks the text in the output area using the selected target language
 speakerTargetButton.addEventListener('click', () => {
-    const utterance = new SpeechSynthesisUtterance(outputTextArea.value);
-    utterance.lang = languageTargetDropdown.value;
-    speechSynthesis.speak(utterance);
+    speak(outputTextArea.value, languageTargetDropdown.value);
 });
 
 // Speaks the text in the input area using the selected source language
 speakerSourceButton.addEventListener('click', () => {
-    const utterance = new SpeechSynthesisUtterance(inputTextArea.value);
-    utterance.lang = languageSourceDropdown.value;
-    speechSynthesis.speak(utterance);
+    speak(inputTextArea.value, languageSourceDropdown.value);
 });
 
 // Copies the text in the output area to the clipboard
