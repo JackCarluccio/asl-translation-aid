@@ -37,16 +37,16 @@ function updateTranslation() {
 
 let lastInputText = "";
 setInterval(() => {
-    // If the text didn't change, don't bother translating it again
-    const currentInputText = inputTextArea.value;
-    if (currentInputText == lastInputText) {
-        return;
-    }
-
     // If the input is empty, clear the output
+    const currentInputText = inputTextArea.value;
     if (currentInputText == "") {
         outputTextArea.value = "";
         lastInputText = "";
+        return;
+    }
+
+    // If the text didn't change, don't bother translating it again
+    if (currentInputText == lastInputText) {
         return;
     }
 
