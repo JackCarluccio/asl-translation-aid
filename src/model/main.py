@@ -41,6 +41,8 @@ mp_drawing = mp.solutions.drawing_utils
 
 # === temporal detector ===
 detector = Detector()
+sentence = ""
+current_word = ""
 
 def normalize_class(name: str) -> str:
     if not name:
@@ -124,6 +126,33 @@ def process_frame(img):
     # === YOLO on your mask image ===
     raw_label, conf = yolo_predict_best(mask)
     return raw_label
+
+RAW_WINDOW = []
+ACCEPTED = []
+
+def collect_char(raw_label, window_size=10, threshold=7):
+    if raw_label == "unknown" or not raw_label.isalpha(): 
+        return
+    RAW_WINDOW.append(raw_label.lower())
+    if len(RAW_WINDOW) == window_size:
+        counts = {}
+        for c in RAW_WINDOW: counts[c] = counts.get(c, 0) + 1
+        for c, n in counts.items():
+            if n >= threshold:
+                ACCEPTED.append(c)
+                break
+        RAW_WINDOW.clear()
+
+def live_text():
+    return "".join(ACCEPTED).replace("ww", " ").strip()
+
+def finalize_sentence():
+    return word_check(live_text())
+
+def clear_all():
+    RAW_WINDOW.clear()
+    ACCEPTED.clear()
+
 
 #         # minimal gating so we don't block the model
 #         cls = normalize_class(raw_label)
