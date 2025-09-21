@@ -1,44 +1,68 @@
-import cv2
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+import cv2 
 import mediapipe as mp
+import pandas as pd
+import kagglehub
+import os
+import time
+import matplotlib.pyplot as plt
+
+# 1. Load the data
+df = pd.read_csv("hand_landmarks.csv")
+
+
+# 2. Split features and labels
+X = df.drop("label", axis=1)
+y = df["label"]
+
+# 3. Normalize features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# 4. Train the classifier
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+clf.fit(X_scaled, y)
+
+
 
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 mp_drawing = mp.solutions.drawing_utils
-
 # Start webcam capture
-cap = cv2.VideoCapture(0)
+# Download latest version
 
+
+
+cap = cv2.VideoCapture(0)
 while cap.isOpened():
     success, image = cap.read()
     if not success:
         print("Ignoring empty camera frame.")
         continue
-
-    # Flip the image horizontally for a later selfie-view display
-    # Convert the BGR image to RGB
-    image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
-
-    # Process the image and find hands
     results = hands.process(image)
-
-    # Convert the image color back so it can be displayed
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-    # Draw the hand annotations on the image
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
-            mp_drawing.draw_landmarks(
-                image,
-                hand_landmarks,
-                mp_hands.HAND_CONNECTIONS)
-
-    # Show the image
-    cv2.imshow('MediaPipe Hands', image)
-
-    # Exit on 'ESC' key
-    if cv2.waitKey(5) & 0xFF == 27:
+            coords = []
+            for i, landmark in enumerate(hand_landmarks.landmark):
+                coords.append(landmark.x)
+                coords.append(landmark.y)
+                coords.append(landmark.z)
+            if len(coords) == 63:
+                coords_scaled = scaler.transform([coords])
+                result = clf.predict(coords_scaled)
+                print(result)
+            else:
+                print("Not enough landmarks detected.")
+            mp_drawing.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+    cv2.imshow('ASL Hand Prediction', image)
+    if cv2.waitKey(1) & 0xFF == 27:  # ESC to quit
         break
-
 cap.release()
 cv2.destroyAllWindows()
+            
+
+
+    
+
