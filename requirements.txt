@@ -2,4 +2,4 @@ ultralytics
 mediapipe
 numpy==1.26.4
 opencv-python
-matplotlib
+matplotlibwordfreq
