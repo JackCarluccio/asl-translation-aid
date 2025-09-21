@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>ASL Translation Aid</title>
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
   <audio id="player" controls></audio>
@@ -41,7 +41,7 @@
         
         <div class="bottom-right">
           <button id="copy-button-source">
-            <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
+            <img src="{{ url_for('static', filename='images/copy.png') }}" alt="Copy" />
           </button>
         </div>
 
@@ -49,15 +49,15 @@
           <div>
             <button id="microphone-button"
               aria-pressed="false"
-              data-off="{{ url_for('static', filename='icons/microphone.png') }}"
-              data-on="{{ url_for('static', filename='icons/stop.png') }}"
+              data-off="{{ url_for('static', filename='images/microphone.png') }}"
+              data-on="{{ url_for('static', filename='images/stop.png') }}"
             >
-              <img id="microphone-icon" src="{{ url_for('static', filename='icons/microphone.png') }}" alt="Microphone" />
+              <img id="microphone-icon" src="{{ url_for('static', filename='images/microphone.png') }}" alt="Microphone" />
             </button>
           </div>
           <div>
             <button class="speaker-btn" id="speaker-button-source">
-              <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
+              <img src="{{ url_for('static', filename='images/speaker.png') }}" alt="Speak" />
             </button>
           </div>
         </div>
@@ -90,15 +90,15 @@
 
         <textarea id="output-text" class="output" readonly></textarea>
 
-        <div class = "bottom-right">
+        <div class="bottom-right">
           <button id="copy-button-target">
-            <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
+            <img src="{{ url_for('static', filename='images/copy.png') }}" alt="Copy" />
           </button>
         </div>
         
-        <div class= "bottom-left">
+        <div class="bottom-left">
           <button class="speaker-btn" id="speaker-button-target">
-            <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
+            <img src="{{ url_for('static', filename='images/speaker.png') }}" alt="Speak" />
           </button>
         </div>
       
@@ -111,14 +111,14 @@
       <button class="tab" id="camera-button"
         aria-pressed="false"
       >
-        <img src="{{ url_for('static', filename='icons/camera.png') }}" alt="Camera" />
+        <img src="{{ url_for('static', filename='images/camera.png') }}" alt="Camera" />
       </button>
     </div>
 
   </div>
 
-  <script type="module" src="{{ url_for('static', filename='index.js') }}"></script>
-  <script type="module" src="{{ url_for('static', filename='capture.js') }}"></script>
-  <script type="module" src="{{ url_for('static', filename='stt.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/capture.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/stt.js') }}"></script>
 </body>
 </html>
