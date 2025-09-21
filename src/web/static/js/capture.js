@@ -34,7 +34,7 @@ async function startWebcamStreaming({
 
     // Encode loop: keep only the most recent JPEG blob
     const encodeLoop = () => {
-        ctx.drawImage(videoEl, 0, 0, width, height);
+        ctx.drawImage(videoPreview, 0, 0, width, height);
         canvas.toBlob(b => { latestBlob = b; }, "image/jpeg", jpegQuality);
         rafId = requestAnimationFrame(encodeLoop);
     };
