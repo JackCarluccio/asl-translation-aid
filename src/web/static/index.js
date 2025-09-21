@@ -6,6 +6,8 @@ const languageTargetDropdown = document.getElementById('language-target');
 const languageSourceDropdown = document.getElementById('language-source');
 const speakerTargetButton = document.getElementById('speaker-button-target');
 const speakerSourceButton = document.getElementById('speaker-button-source');
+const copyTargetButton = document.getElementById('copy-button-target');
+const copySourceButton = document.getElementById('copy-button-source');
 
 const inputTextArea = document.getElementById('input-text');
 const outputTextArea = document.getElementById('output-text');
@@ -115,4 +117,14 @@ speakerSourceButton.addEventListener('click', () => {
     const utterance = new SpeechSynthesisUtterance(inputTextArea.value);
     utterance.lang = languageSourceDropdown.value;
     speechSynthesis.speak(utterance);
+});
+
+// Copies the text in the output area to the clipboard
+copyTargetButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(outputTextArea.value);
+});
+
+// Copies the text in the input area to the clipboard
+copySourceButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(inputTextArea.value);
 });
