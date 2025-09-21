@@ -95,6 +95,19 @@ h1 {
   color: #202124;
 }
 
+.video-wrapper {
+  display: flex;
+  justify-content: center;  /* horizontal center */
+}
+
+#video-preview {
+  width: 50%;
+  height: auto;
+  aspect-ratio: 640/360;
+  background: #000;
+  border-radius: 12px;
+}
+
 /* Tabs for text/camera/mic */
 .tabs {
   display: flex;

@@ -1,5 +1,6 @@
 // Elements
 const cameraBtn = document.getElementById('camera-button');
+const videoPreview = document.getElementById('video-preview');
 const inputTextArea = document.getElementById('input-text');
 
 let stream;
@@ -12,23 +13,18 @@ let sendTimer = null;
 
 // Starts webcam, encodes frames to JPEG, and sends them to the server
 async function startWebcamStreaming({
-	videoSelector = "#preview",
 	width = 640,
 	height = 360,
 	fps = 10,
 	jpegQuality = 0.7,   // 0..1
 } = {}) {
-    // Grab the preview video
-    videoEl = document.querySelector(videoSelector);
-    if (!videoEl) throw new Error(`No <video> element at ${videoSelector}`);
-
     // Get webcam
     stream = await navigator.mediaDevices.getUserMedia({
         video: { width: { ideal: width }, height: { ideal: height }, frameRate: { ideal: 30 } },
         audio: false
     });
-    videoEl.srcObject = stream;
-    await videoEl.play();
+    videoPreview.srcObject = stream;
+    await videoPreview.play();
 
     // Offscreen canvas for encoding (no HTML element needed)
     canvas = document.createElement("canvas");
