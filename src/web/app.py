@@ -11,9 +11,3 @@ app.register_blueprint(home_bp)
 app.register_blueprint(tts_bp)
 app.register_blueprint(translate_bp)
 app.register_blueprint(frames_bp)
-
-# Start the OpenCV viewer only in the reloader child
-if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-    # IMPORTANT: import here so both modules share the same process/module state
-    from .display_debug import start_viewer_thread
-    start_viewer_thread()

@@ -4,12 +4,8 @@ from src.model.main import process_frame
 
 bp = Blueprint("frames", __name__, url_prefix="/api/frames")
 
-latest_frame = None  # global var, same role as `cap.read()`
-
 @bp.route("", methods=["POST"])
 def ingest():
-    global latest_frame
-
     f = request.files.get("frame")
     if not f:
         abort(400, "missing frame")
@@ -20,7 +16,7 @@ def ingest():
     if img is None:
         abort(400, "could not decode image")
     
-    process_frame(img)
+    label = process_frame(img)
+    print(label)
 
-    latest_frame = img  # this is equivalent to `image = cap.read()`
     return ("", 204)
