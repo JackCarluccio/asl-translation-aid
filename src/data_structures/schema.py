@@ -17,8 +17,8 @@ UNKNOWN_CLASS = "UNKNOWN"
 # ----- Minimal decision defaults (used by detection.py) -----
 TEMPORAL_WINDOW = 10     # how many recent frames to consider
 MIN_VOTES = 7            # how many must agree to lock a letter
-MIN_CONFIDENCE = 0.60    # floor for accepting a frame
-COOLDOWN_MS = 500        # ignore repeats for this long after accept
+MIN_CONFIDENCE = 0.30    # floor for accepting a frame
+COOLDOWN_MS = 3000        # ignore repeats for this long after accept
 
 # ----- Status for UI -----
 class Status(str, Enum):
