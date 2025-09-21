@@ -1,5 +1,5 @@
 import cv2, numpy as np
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, jsonify
 from src.model.main import process_frame
 
 bp = Blueprint("frames", __name__, url_prefix="/api/frames")
@@ -16,7 +16,6 @@ def ingest():
     if img is None:
         abort(400, "could not decode image")
     
-    label = process_frame(img)
-    print(label)
-
-    return ("", 204)
+    running_text = process_frame(img)
+    print(running_text)
+    return jsonify({"runningText": running_text})
