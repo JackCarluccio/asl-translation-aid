@@ -12,7 +12,7 @@
   
   <div class="container">
   
-    <h1>ASL Translate App</h1>
+    <h1>Translation with ASL</h1>
 
     <!-- Text Mode -->
     <div id="textMode" class="mode active">
@@ -47,8 +47,12 @@
 
         <div class="bottom-left">
           <div>
-            <button id="microphone-button">
-              <img src="{{ url_for('static', filename='icons/microphone.png') }}" alt="Microphone" />
+            <button id="microphone-button"
+              aria-pressed="false"
+              data-off="{{ url_for('static', filename='icons/microphone.png') }}"
+              data-on="{{ url_for('static', filename='icons/stop.png') }}"
+            >
+              <img id="microphone-icon" src="{{ url_for('static', filename='icons/microphone.png') }}" alt="Microphone" />
             </button>
           </div>
           <div>
@@ -111,7 +115,8 @@
 
   </div>
 
-  <script src="{{ url_for('static', filename='index.js') }}"></script>
-  <script src="{{ url_for('static', filename='capture.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='index.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='capture.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='stt.js') }}"></script>
 </body>
 </html>

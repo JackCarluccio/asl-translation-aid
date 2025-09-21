@@ -1,5 +1,4 @@
 const cameraButton = document.getElementById('camera-button');
-const microphoneButton = document.getElementById('microphone-button');
 
 const switchButton = document.getElementById('switch-button');
 const languageTargetDropdown = document.getElementById('language-target');
@@ -72,37 +71,6 @@ async function speak(text, lang) {
     audio.src = url;
     await audio.play();
 }
-
-
-function initRecognition() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) {
-      alert("SpeechRecognition not supported in this browser.");
-      return null;
-    }
-    
-    const r = new SR();
-    r.interimResults = true;
-    r.continuous = false;
-    r.maxAlternatives = 1;
-    return r;
-}
-
-microphoneButton.addEventListener('click', () => {
-    recognition = initRecognition();
-    if (!recognition) return;
-
-    recognition.lang = languageSourceDropdown.value;
-    recognition.onresult = (e) => {
-      let text = '';
-      for (const res of e.results) text += res[0].transcript;
-      inputTextArea.value = text;
-    };
-
-    recognition.onerror = (e) => console.error("STT error:", e.error);
-    recognition.onend = () => console.log("STT ended");
-    recognition.start();
-});
 
 // Switches the source and target languages when the button is clicked
 switchButton.addEventListener('click', () => {
