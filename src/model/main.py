@@ -41,8 +41,6 @@ mp_drawing = mp.solutions.drawing_utils
 
 # === temporal detector ===
 detector = Detector()
-sentence = ""
-current_word = ""
 
 def normalize_class(name: str) -> str:
     if not name:
@@ -132,9 +130,16 @@ window_size=20
 threshold=13
 
 RAW_WINDOW = []
-ACCEPTED = []
+ACCEPTED = ""
+
+
+def set_text(text):
+    global ACCEPTED
+    ACCEPTED = text
+
 
 def list_appender(raw_label):
+    global RAW_WINDOW, ACCEPTED
     if raw_label == "unknown"or not (len(raw_label) == 1 and raw_label.isalpha()):
         return
     RAW_WINDOW.append(raw_label.lower())
@@ -143,79 +148,20 @@ def list_appender(raw_label):
         for c in RAW_WINDOW: counts[c] = counts.get(c, 0) + 1
         for c, n in counts.items():
             if n >= threshold:
-                ACCEPTED.append(c)
+                ACCEPTED = ACCEPTED + c
+                ACCEPTED = ACCEPTED.replace("ww", " ")
+
                 break
         RAW_WINDOW.clear()
 
 def live_text():
-    s = "".join(ACCEPTED)
-    parts = s.split("ww")
+    global ACCEPTED
+    parts = ACCEPTED.split(" ")
     left = [word_check(p) for p in parts[:-1] if p]   # autocorrect only finished words
     last = parts[-1]                                  # current word stays raw
     return (" ".join(left + ([last] if last else []))).strip()
 
 def clear_all():
+    global ACCEPTED, RAW_WINDOW
     RAW_WINDOW.clear()
-    ACCEPTED.clear()
-
-
-#         # minimal gating so we don't block the model
-#         cls = normalize_class(raw_label)
-#         if conf < CONF_FLOOR:
-#             cls, conf = UNKNOWN_CLASS, 0.0
-
-#         # === feed Detector (same as your old flow) ===
-#         ts = int(time.time() * 1000)
-#         detector.update(MLFrame(
-#             timestamp_ms=ts,
-#             hand_present=(cls != UNKNOWN_CLASS),
-#             predictions=[Prediction(cls=cls, prob=conf)]
-#         ))
-
-#         # draw YOLO class/score on the mask (optional)
-#         if cls != UNKNOWN_CLASS:
-#             cv2.putText(mask, f"{cls}:{conf:.2f}", (10, 28),
-#                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 180, 0), 2)
-
-#         # === overlay buffer + live sentence on the camera window ===
-#         snap = detector.snapshot()
-#         live_buffer = snap.buffer
-
-#         # Debounce spell-check (heavy) to ~SPELL_FPS
-#         now = time.time()
-#         if now - last_spell_t >= (1.0 / max(1, SPELL_FPS)):
-#             try:
-#                 live_sentence_cache = word_check(live_buffer.replace("WW", " ").strip())
-#             except Exception:
-#                 # fallback: show raw buffer if spell-check has issues
-#                 live_sentence_cache = live_buffer.replace("WW", " ").strip()
-#             last_spell_t = now
-
-#         # put overlays on the LEFT (original) view so it’s visible while edges stay clean
-#         cv2.putText(img, f"Buffer: {live_buffer}", (10, 28),
-#                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
-#         cv2.putText(img, f"Sentence: {live_sentence_cache}", (10, 56),
-#                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200,255,200), 2)
-
-#         # Combine original and mask side by side
-#         combined = np.hstack((img, mask))
-
-#         # Display combined image
-#         cv2.imshow('Original | Edges + Hand Outline', combined)
-#         key = cv2.waitKey(1) & 0xFF
-#         if key in (27, ord('q')):
-#             quit_now = True
-
-# except KeyboardInterrupt:
-#     # Gracefully stop on Ctrl-C; we'll still print the final sentence below.
-#     pass
-# finally:
-#     cap.release()
-#     cv2.destroyAllWindows()
-#     # Always attempt one final spelling pass on the full buffer
-#     final_buffer = detector.snapshot().buffer.replace("WW", " ").strip()
-#     try:
-#         final_sentence = word_check(final_buffer)
-#     except Exception:
-#         final_sentence = final_buffer
-#     print("\nFINAL SENTENCE:", final_sentence, flush=True)
+    ACCEPTED = ""

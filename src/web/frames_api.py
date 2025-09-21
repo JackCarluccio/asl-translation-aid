@@ -25,3 +25,11 @@ def ingest():
 def clear():
     asl_model.clear_all()
     return ("", 204)
+
+# Set the current running text (for manual correction)
+@bp.route("/set_text", methods=["POST"])
+def set_text():
+    data = request.get_json()
+    text = data.get("text", "")
+    asl_model.set_text(text)
+    return ("", 204)

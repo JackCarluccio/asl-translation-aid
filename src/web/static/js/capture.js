@@ -64,6 +64,12 @@ async function startWebcamStreaming({
 			sending = false;
 		}
     }, intervalMs);
+
+	await fetch("/api/frames/set_text", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ text: inputTextArea.value })
+	})
 }
 
 // Stops webcam, encoding, and sending
