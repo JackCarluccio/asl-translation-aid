@@ -1,3 +1,6 @@
+// Elements
+const cameraBtn = document.getElementById('camera-button');
+
 let stream;
 let videoEl;
 let canvas, ctx;
@@ -6,6 +9,7 @@ let sending = false;
 let rafId = null;
 let sendTimer = null;
 
+// Starts webcam, encodes frames to JPEG, and sends them to the server
 async function startWebcamStreaming({
   videoSelector = "#preview",
   endpoint = "/api/frames",
@@ -58,18 +62,28 @@ async function startWebcamStreaming({
   }, intervalMs);
 }
 
+// Stops webcam, encoding, and sending
 function stopWebcamStreaming() {
-  if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-  if (sendTimer) { clearInterval(sendTimer); sendTimer = null; }
-  if (stream) {
-    stream.getTracks().forEach(t => t.stop());
-    stream = null;
-  }
-  latestBlob = null;
-  videoEl = null;
-  canvas = null;
-  ctx = null;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    if (sendTimer) { clearInterval(sendTimer); sendTimer = null; }
+    if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+    }
+    latestBlob = null;
+    videoEl = null;
+    canvas = null;
+    ctx = null;
 }
 
-// Kick it off (make sure your HTML has: <video id="preview" autoplay muted playsinline></video>)
-startWebcamStreaming();
+// Stops/starts webcam streaming when the camera tab is toggled
+cameraBtn.addEventListener('click', () => {
+    const pressed = cameraBtn.getAttribute("aria-pressed") === "true";
+   if (pressed) {
+       stopWebcamStreaming();
+       cameraBtn.setAttribute("aria-pressed", "false");
+   } else {
+       startWebcamStreaming();
+       cameraBtn.setAttribute("aria-pressed", "true");
+   }
+});
