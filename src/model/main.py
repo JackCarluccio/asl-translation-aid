@@ -88,102 +88,100 @@ last_spell_t = 0.0
 live_sentence_cache = ""
 
 quit_now = False
-try:
-    while cap.isOpened() and not quit_now:
-        ret, img = cap.read()
-        if not ret:
-            break
+def process_frame(img):
 
-        # mirror for UX
-        img = cv2.flip(img, 1)
 
-        # Convert BGR to RGB for MediaPipe
-        rgb_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    # mirror for UX
+    img = cv2.flip(img, 1)
 
-        # Process the frame (for your visual mask)
-        results = hands.process(rgb_frame)
+    # Convert BGR to RGB for MediaPipe
+    rgb_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-        # Edge detection on original image
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        edges = cv2.Canny(gray, 50, 150)
+    # Process the frame (for your visual mask)
+    results = hands.process(rgb_frame)
 
-        # Invert edges: black edges on white background
-        edges = cv2.bitwise_not(edges)
+    # Edge detection on original image
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray, 50, 150)
 
-        # Convert edges to 3-channel
-        mask = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
+    # Invert edges: black edges on white background cuz i did it that way when we trained idk
+    edges = cv2.bitwise_not(edges)
 
-        # Draw MediaPipe hand connections (visual only)
-        if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                mp_drawing.draw_landmarks(
-                    mask,
-                    hand_landmarks,
-                    mp_hands.HAND_CONNECTIONS,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2)
-                )
+    # Convert edges to 3-channel
+    mask = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)
 
-        # === YOLO on your mask image ===
-        raw_label, conf = yolo_predict_best(mask)
+    # Draw MediaPipe hand connections (visual only)
+    if results.multi_hand_landmarks:
+        for hand_landmarks in results.multi_hand_landmarks:
+            mp_drawing.draw_landmarks(
+                mask,
+                hand_landmarks,
+                mp_hands.HAND_CONNECTIONS,
+                landmark_drawing_spec=None,
+                connection_drawing_spec=mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2)
+            )
 
-        # minimal gating so we don't block the model
-        cls = normalize_class(raw_label)
-        if conf < CONF_FLOOR:
-            cls, conf = UNKNOWN_CLASS, 0.0
+    # === YOLO on your mask image ===
+    raw_label, conf = yolo_predict_best(mask)
+    return raw_label
 
-        # === feed Detector (same as your old flow) ===
-        ts = int(time.time() * 1000)
-        detector.update(MLFrame(
-            timestamp_ms=ts,
-            hand_present=(cls != UNKNOWN_CLASS),
-            predictions=[Prediction(cls=cls, prob=conf)]
-        ))
+#         # minimal gating so we don't block the model
+#         cls = normalize_class(raw_label)
+#         if conf < CONF_FLOOR:
+#             cls, conf = UNKNOWN_CLASS, 0.0
 
-        # draw YOLO class/score on the mask (optional)
-        if cls != UNKNOWN_CLASS:
-            cv2.putText(mask, f"{cls}:{conf:.2f}", (10, 28),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 180, 0), 2)
+#         # === feed Detector (same as your old flow) ===
+#         ts = int(time.time() * 1000)
+#         detector.update(MLFrame(
+#             timestamp_ms=ts,
+#             hand_present=(cls != UNKNOWN_CLASS),
+#             predictions=[Prediction(cls=cls, prob=conf)]
+#         ))
 
-        # === overlay buffer + live sentence on the camera window ===
-        snap = detector.snapshot()
-        live_buffer = snap.buffer
+#         # draw YOLO class/score on the mask (optional)
+#         if cls != UNKNOWN_CLASS:
+#             cv2.putText(mask, f"{cls}:{conf:.2f}", (10, 28),
+#                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 180, 0), 2)
 
-        # Debounce spell-check (heavy) to ~SPELL_FPS
-        now = time.time()
-        if now - last_spell_t >= (1.0 / max(1, SPELL_FPS)):
-            try:
-                live_sentence_cache = word_check(live_buffer.replace("WW", " ").strip())
-            except Exception:
-                # fallback: show raw buffer if spell-check has issues
-                live_sentence_cache = live_buffer.replace("WW", " ").strip()
-            last_spell_t = now
+#         # === overlay buffer + live sentence on the camera window ===
+#         snap = detector.snapshot()
+#         live_buffer = snap.buffer
 
-        # put overlays on the LEFT (original) view so it’s visible while edges stay clean
-        cv2.putText(img, f"Buffer: {live_buffer}", (10, 28),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
-        cv2.putText(img, f"Sentence: {live_sentence_cache}", (10, 56),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200,255,200), 2)
+#         # Debounce spell-check (heavy) to ~SPELL_FPS
+#         now = time.time()
+#         if now - last_spell_t >= (1.0 / max(1, SPELL_FPS)):
+#             try:
+#                 live_sentence_cache = word_check(live_buffer.replace("WW", " ").strip())
+#             except Exception:
+#                 # fallback: show raw buffer if spell-check has issues
+#                 live_sentence_cache = live_buffer.replace("WW", " ").strip()
+#             last_spell_t = now
 
-        # Combine original and mask side by side
-        combined = np.hstack((img, mask))
+#         # put overlays on the LEFT (original) view so it’s visible while edges stay clean
+#         cv2.putText(img, f"Buffer: {live_buffer}", (10, 28),
+#                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
+#         cv2.putText(img, f"Sentence: {live_sentence_cache}", (10, 56),
+#                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200,255,200), 2)
 
-        # Display combined image
-        cv2.imshow('Original | Edges + Hand Outline', combined)
-        key = cv2.waitKey(1) & 0xFF
-        if key in (27, ord('q')):
-            quit_now = True
+#         # Combine original and mask side by side
+#         combined = np.hstack((img, mask))
 
-except KeyboardInterrupt:
-    # Gracefully stop on Ctrl-C; we'll still print the final sentence below.
-    pass
-finally:
-    cap.release()
-    cv2.destroyAllWindows()
-    # Always attempt one final spelling pass on the full buffer
-    final_buffer = detector.snapshot().buffer.replace("WW", " ").strip()
-    try:
-        final_sentence = word_check(final_buffer)
-    except Exception:
-        final_sentence = final_buffer
-    print("\nFINAL SENTENCE:", final_sentence, flush=True)
+#         # Display combined image
+#         cv2.imshow('Original | Edges + Hand Outline', combined)
+#         key = cv2.waitKey(1) & 0xFF
+#         if key in (27, ord('q')):
+#             quit_now = True
+
+# except KeyboardInterrupt:
+#     # Gracefully stop on Ctrl-C; we'll still print the final sentence below.
+#     pass
+# finally:
+#     cap.release()
+#     cv2.destroyAllWindows()
+#     # Always attempt one final spelling pass on the full buffer
+#     final_buffer = detector.snapshot().buffer.replace("WW", " ").strip()
+#     try:
+#         final_sentence = word_check(final_buffer)
+#     except Exception:
+#         final_sentence = final_buffer
+#     print("\nFINAL SENTENCE:", final_sentence, flush=True)

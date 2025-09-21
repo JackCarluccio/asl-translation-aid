@@ -1,5 +1,6 @@
 import cv2, numpy as np
 from flask import Blueprint, request, abort
+from src.model.main import process_frame
 
 bp = Blueprint("frames", __name__, url_prefix="/api/frames")
 
@@ -18,6 +19,8 @@ def ingest():
     img = cv2.imdecode(data, cv2.IMREAD_COLOR)
     if img is None:
         abort(400, "could not decode image")
+    
+    process_frame(img)
 
     latest_frame = img  # this is equivalent to `image = cap.read()`
     return ("", 204)
