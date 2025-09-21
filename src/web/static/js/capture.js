@@ -100,3 +100,6 @@ cameraBtn.addEventListener('click', () => {
 		cameraBtn.setAttribute("aria-pressed", "true");
 	}
 });
+
+// Clear the current running text on loading the page
+await fetch("/api/frames/clear", { method: "POST" });
