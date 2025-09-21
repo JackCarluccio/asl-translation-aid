@@ -52,7 +52,7 @@ async function startWebcamStreaming({
 		try {
 			const form = new FormData();
 			form.append("frame", latestBlob, "frame.jpg"); // server reads request.files["frame"]
-			const res = await fetch("/api/frames", { method: "POST", body: form });
+			const res = await fetch("/api/frames/frame", { method: "POST", body: form });
 			if (!res.ok) {
 				console.warn("Frame upload failed:", await res.text());
 			} else {
@@ -71,7 +71,7 @@ async function startWebcamStreaming({
 }
 
 // Stops webcam, encoding, and sending
-function stopWebcamStreaming() {
+async function stopWebcamStreaming() {
 	if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
 	if (sendTimer) { clearInterval(sendTimer); sendTimer = null; }
 	if (stream) {
@@ -83,6 +83,8 @@ function stopWebcamStreaming() {
 	videoEl = null;
 	canvas = null;
 	ctx = null;
+
+	await fetch("/api/frames/clear", { method: "POST" });
 }
 
 // Stops/starts webcam streaming when the camera tab is toggled

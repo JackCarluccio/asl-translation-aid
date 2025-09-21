@@ -1,10 +1,11 @@
 import cv2, numpy as np
 from flask import Blueprint, request, abort, jsonify
-from src.model.main import process_frame
+import src.model.main as asl_model
 
 bp = Blueprint("frames", __name__, url_prefix="/api/frames")
 
-@bp.route("", methods=["POST"])
+# Ingest a single frame (JPEG/WEBP) and return the current running text
+@bp.route("/frame", methods=["POST"])
 def ingest():
     f = request.files.get("frame")
     if not f:
@@ -16,6 +17,11 @@ def ingest():
     if img is None:
         abort(400, "could not decode image")
     
-    running_text = process_frame(img)
-    print(running_text)
+    running_text = asl_model.process_frame(img)
     return jsonify({"runningText": running_text})
+
+# Clear all accumulated state (frames, sentence, etc)
+@bp.route("/clear", methods=["POST"])
+def clear():
+    asl_model.clear_all()
+    return ("", 204)
