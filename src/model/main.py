@@ -125,29 +125,34 @@ def process_frame(img):
 
     # === YOLO on your mask image ===
     raw_label, conf = yolo_predict_best(mask)
-    collect_char(raw_label, 10, 7)
-    return word_check(live_text())
+    list_appender(raw_label)
+    return live_text()
+
+window_size=30
+threshold=20
 
 RAW_WINDOW = []
 ACCEPTED = []
 
-def collect_char(raw_label, window_size, threshold):
-    if raw_label == "unknown" or not raw_label.isalpha(): 
-        pass
-    else:
-        RAW_WINDOW.append(raw_label.lower())
-        if len(RAW_WINDOW) == window_size:
-            counts = {}
-            for c in RAW_WINDOW: counts[c] = counts.get(c, 0) + 1
-            for c, n in counts.items():
-                if n >= threshold:
-                    ACCEPTED.append(c)
-                    break
-            RAW_WINDOW.clear()
+def list_appender(raw_label):
+    if raw_label == "unknown"or not (len(raw_label) == 1 and raw_label.isalpha()):
+        return
+    RAW_WINDOW.append(raw_label.lower())
+    if len(RAW_WINDOW) == window_size:
+        counts = {}
+        for c in RAW_WINDOW: counts[c] = counts.get(c, 0) + 1
+        for c, n in counts.items():
+            if n >= threshold:
+                ACCEPTED.append(c)
+                break
+        RAW_WINDOW.clear()
 
 def live_text():
-    ACCEPTED = "".join(ACCEPTED).replace("ww", " ").strip()
-    return ACCEPTED
+    s = "".join(ACCEPTED)
+    parts = s.split("ww")
+    left = [word_check(p) for p in parts[:-1] if p]   # autocorrect only finished words
+    last = parts[-1]                                  # current word stays raw
+    return (" ".join(left + ([last] if last else []))).strip()
 
 def clear_all():
     RAW_WINDOW.clear()

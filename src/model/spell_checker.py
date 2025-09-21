@@ -68,7 +68,7 @@ def correct_spelling(word, vocabulary):
             best = max(best_guesses, key=modern_score)
             return best
         else:
-            return "Word is not in dictionary"
+            return ""
 def try_word(word):
     return correct_spelling(word, vocabs)
 
