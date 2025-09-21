@@ -126,7 +126,7 @@ def process_frame(img):
     # === YOLO on your mask image ===
     raw_label, conf = yolo_predict_best(mask)
     collect_char(raw_label, 10, 7)
-    return live_text()
+    return word_check(live_text())
 
 RAW_WINDOW = []
 ACCEPTED = []
@@ -145,10 +145,8 @@ def collect_char(raw_label, window_size, threshold):
         RAW_WINDOW.clear()
 
 def live_text():
-    return "".join(ACCEPTED).replace("ww", " ").strip()
-
-def finalize_sentence():
-    return word_check(live_text())
+    list_str = "".join(ACCEPTED).replace("ww", " ").strip()
+    return list_str
 
 def clear_all():
     RAW_WINDOW.clear()
