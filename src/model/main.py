@@ -128,8 +128,8 @@ def process_frame(img):
     list_appender(raw_label)
     return live_text()
 
-window_size=30
-threshold=20
+window_size=20
+threshold=13
 
 RAW_WINDOW = []
 ACCEPTED = []
