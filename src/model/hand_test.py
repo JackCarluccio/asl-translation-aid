@@ -38,8 +38,8 @@ hands = mp_hands.Hands(
     static_image_mode=False,
     max_num_hands=1,
     model_complexity=1,
-    min_detection_confidence=0.3,
-    min_tracking_confidence=0.3
+    min_detection_confidence=0.4,
+    min_tracking_confidence=0.4
 )
 mp_drawing = mp.solutions.drawing_utils
 
@@ -117,4 +117,5 @@ finally:
     cap.release()
     cv2.destroyAllWindows()
     final_sentence = detector.snapshot().buffer
+    final_sentence = final_sentence.replace("WW", " ").strip()
     print("\nFINAL SENTENCE:", word_check(final_sentence), flush=True)
