@@ -26,7 +26,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 # 4. Train the classifier
-clf = RandomForestClassifier(n_estimators=200, random_state=62)
+clf = RandomForestClassifier(n_estimators=100, random_state=62)
 clf.fit(X_scaled, y)
 
 # === Init detector once ===
@@ -38,8 +38,8 @@ hands = mp_hands.Hands(
     static_image_mode=False,
     max_num_hands=1,
     model_complexity=1,
-    min_detection_confidence=0.4,
-    min_tracking_confidence=0.4
+    min_detection_confidence=0.3,
+    min_tracking_confidence=0.3
 )
 mp_drawing = mp.solutions.drawing_utils
 

@@ -15,7 +15,7 @@ ID_TO_CLASS = {i: c for c, i in CLASS_TO_ID.items()}
 UNKNOWN_CLASS = "UNKNOWN"
 
 # ----- Minimal decision defaults (used by detection.py) -----
-TEMPORAL_WINDOW = 10     # how many recent frames to consider
+TEMPORAL_WINDOW = 10    # how many recent frames to consider
 MIN_VOTES = 7            # how many must agree to lock a letter
 MIN_CONFIDENCE = 0.40    # floor for accepting a frame
 COOLDOWN_MS = 2000        # ignore repeats for this long after accept
