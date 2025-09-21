@@ -133,7 +133,7 @@ ACCEPTED = []
 
 def collect_char(raw_label, window_size, threshold):
     if raw_label == "unknown" or not raw_label.isalpha(): 
-        return
+        pass
     RAW_WINDOW.append(raw_label.lower())
     if len(RAW_WINDOW) == window_size:
         counts = {}
@@ -145,8 +145,8 @@ def collect_char(raw_label, window_size, threshold):
         RAW_WINDOW.clear()
 
 def live_text():
-    list_str = "".join(ACCEPTED).replace("ww", " ").strip()
-    return list_str
+    ACCEPTED = "".join(ACCEPTED).replace("ww", " ").strip()
+    return ACCEPTED
 
 def clear_all():
     RAW_WINDOW.clear()
