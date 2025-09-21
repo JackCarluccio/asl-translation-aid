@@ -34,6 +34,9 @@
     <button class="speaker-btn" id="speaker-button-source">
         <img src="{{ url_for('static', filename='icons/speaker.png') }}" alt="Speak" />
     </button>
+    <button class = "copyBtn" id="copy-button-source">
+        <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
+    </button>
   </div>
 
   <!-- Swap button -->
@@ -59,7 +62,7 @@
       <option value="sl-SI">Slovenian</option>
     </select>
     <textarea id="output-text" class="output" readonly></textarea>
-    <button id="copyBtn">
+    <button class="copyBtn" id="copy-button-target">
         <img src="{{ url_for('static', filename='icons/copy.png') }}" alt="Copy" />
     </button>
     <button class="speaker-btn" id="speaker-button-target">
