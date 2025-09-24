@@ -1,6 +1,7 @@
 # ASL Translation Aid (SteelHacks 12)
 
 A Google-Translate-style application that provides **American Sign Language (ASL) real-time video interpretation** in addition to text and speech translation between many langauges.
+[Demo Video](https://youtu.be/YlEmaY9VAtA)
 
 ## Overview
 
@@ -26,9 +27,8 @@ ASL Translation Aid enables users to:
 
 ## Requirements
 
-- Python 3.11+ (tested with 3.12)
+- Python <= 3.11, >= 3.7
 - Google API key
-- Windows, macOS, or Linux
 
 ## Setup
 
@@ -60,16 +60,11 @@ flask --app=src/web/app run
 flask --app=src/web/app run --host=0.0.0.0
 ```
 Visit `http://<your-ip>:5000` from another device on your local network.
+Note: Other devices must not be connected to a VPN.
 
 ## Environment Variables
 
 - `GOOGLE_API_KEY` — required for translation features
-
-## Troubleshooting
-
-- **`py`/`python` not found:** Ensure Python is in your PATH. On Windows, try `python` instead of `py`.
-- **Cannot access from another device:** Bind to `0.0.0.0` and ensure port 5000 is open on your firewall.
-- **Static/template issues:** Run commands from the repository root and confirm `templates/` and `static/` directories exist. CSS should be linked via `/static/...`.
 
 ## Attribution
 
